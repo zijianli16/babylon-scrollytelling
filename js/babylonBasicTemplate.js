@@ -33,7 +33,7 @@ function creatArcRotateCamera(scene) {
 function createUniversalCamera(scene) {
     var camera = new BABYLON.UniversalCamera("camera1", new BABYLON.Vector3(0, 5, 0), scene);
     camera.setTarget(new BABYLON.Vector3(0, 8, 10));
-    
+
     //Set the ellipsoid around the camera
     camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
     scene.collisionsEnabled = true;
@@ -197,6 +197,93 @@ engine.runRenderLoop(() => {
 window.addEventListener('resize', function () {
     engine.resize();
 });
+
+//==========Adding scrollama.js below==================
+const scrollamaScene = scrollama();
+// setup the instance, pass callback functions
+
+scrollamaScene
+    .setup({
+        step: ".step",
+        debug: true,
+        offset: 0.8
+    })
+
+    .onStepEnter(response => {
+        // { element, index, direction }
+
+        function changeCameraPosition01() {
+
+            let newIndex = response.index;
+            let direction = response.direction;
+
+            if (newIndex == 0 && direction == 'down') {
+
+            }
+            else if (newIndex == 0 && direction == 'up') {
+
+            }
+            else if (newIndex == 1 && direction == "down") {
+
+            }
+            else if (newIndex == 1 && direction == "up") {
+
+            }
+            else if (newIndex == 2 && direction == "down") {
+
+            }
+            else if (newIndex == 2 && direction == "up") {
+
+            }
+        }
+
+        changeCameraPosition01();
+
+        console.log("Entered");
+        console.log(response.index);
+        console.log(response.direction);
+
+    })
+
+    .onStepExit(response => {
+        // { element, index, direction }
+        function changeCameraPosition02() {
+
+            let newIndex = response.index;
+            let direction = response.direction;
+
+            if (newIndex == 0 && direction == "down") {
+
+            }
+            else if (newIndex == 0 && direction == "up") {
+
+
+            }
+            else if (newIndex == 1 && direction == "down") {
+
+            }
+            else if (newIndex == 1 && direction == "up") {
+
+            }
+            else if (newIndex == 2 && direction == "down") {
+
+            }
+            else if (newIndex == 2 && direction == "up") {
+
+            }
+        }
+
+        changeCameraPosition02();
+
+        console.log("Exit");
+        console.log(response.index);
+        console.log(response.direction);
+
+    })
+
+// setup resize event
+window.addEventListener("resize", scrollamaScene.resize);
+//==========Ending of scrollama.js==================
 
 
 
