@@ -101,7 +101,7 @@ function importLocalGLTFModel(scene) {
 }
 
 //scroll to move camera position, move mouse to change camera perspective. It can only be used when universal camera is enabled
-function mouseToMoveCamera(scene) {
+function scrollToMoveCamera(scene) {
     scene.onPrePointerObservable.add(function (pointerInfo, eventState) {
         console.log('pointerInfo.type=' + pointerInfo.type);
         var event = pointerInfo.event;
@@ -176,7 +176,7 @@ function createScene() {
     importLocalGLTFModel(scene);
 
     //scroll to move camera position, move mouse to change camera perspective. It can only be used when universal camera is enabled
-    //mouseToMoveCamera(scene);
+    //scrollToMoveCamera(scene);
 
     //debug scene
     // debug(scene);
