@@ -41,10 +41,11 @@ function createUniversalCamera(scene) {
 
     camera.attachControl(canvas, true);
 
-    //limit camera rotation
-    scene.registerBeforeRender(function () {
-        // camera.rotation.x = 90;
-    })
+    //lock camera rotation
+    // scene.registerBeforeRender(function () {
+    //     camera.position.y = 100;
+    //     camera.rotation.x = 90;
+    // })
 }
 //*************************ABOVES ARE CAMERAS*******************/
 
