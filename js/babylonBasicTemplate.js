@@ -176,7 +176,7 @@ function createScene() {
     importLocalGLTFModel(scene);
 
     //scroll to move camera position, move mouse to change camera perspective. It can only be used when universal camera is enabled
-    mouseToMoveCamera(scene);
+    //mouseToMoveCamera(scene);
 
     //debug scene
     // debug(scene);
