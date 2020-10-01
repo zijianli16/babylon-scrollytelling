@@ -196,6 +196,9 @@ function createScene() {
     //create an iniversal camera to enable scroll to control camera movement
     createUniversalCamera(scene);
 
+    //animate Universal Camera
+    animateCamera(scene);
+
     //creat a HemisphericLight
     createHemisphericLight(scene);
 
@@ -213,9 +216,6 @@ function createScene() {
 
     //debug scene
     // debug(scene);
-
-    //animate camera
-    animateCamera(scene);
 
     //return scene
     return scene;
