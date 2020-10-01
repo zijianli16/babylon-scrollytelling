@@ -30,16 +30,18 @@ function creatArcRotateCamera(scene) {
 }
 
 //create an Universal Camera for mouse scroll camera movement
+var universalCamera;
+
 function createUniversalCamera(scene) {
-    var camera = new BABYLON.UniversalCamera("camera1", new BABYLON.Vector3(0, 5, 0), scene);
-    camera.setTarget(new BABYLON.Vector3(0, 8, 10));
+    universalCamera = new BABYLON.UniversalCamera("camera1", new BABYLON.Vector3(0, 5, 0), scene);
+    universalCamera.setTarget(new BABYLON.Vector3(0, 8, 10));
 
     //Set the ellipsoid around the camera
-    camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
+    universalCamera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
     scene.collisionsEnabled = true;
-    camera.checkCollisions = true;
+    universalCamera.checkCollisions = true;
 
-    camera.attachControl(canvas, true);
+    universalCamera.attachControl(canvas, true);
 
     //lock camera rotation
     // scene.registerBeforeRender(function () {
@@ -48,6 +50,36 @@ function createUniversalCamera(scene) {
     // })
 }
 //*************************ABOVES ARE CAMERAS*******************/
+
+//*************************BELOW ARE CAMERAS ANIMATION*******************/
+function animateCamera(scene) {
+    var camAnimation = new BABYLON.Animation("camAnimation", "position", 60, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+     
+    var keys = [];
+    //At the animation key "0", the value of position is "(0, 5, 0)"
+    keys.push({
+        frame: 0,
+        value: new BABYLON.Vector3(0, 5, 0),
+        // outTangent: BABYLON.Vector3.Forward()
+    });
+    //At the animation key "30", the value of position is "(0, 5, 5)"
+    keys.push( {
+        frame: 30,
+        value: new BABYLON.Vector3(0, 5, 5),
+        //inTangent: BABYLON.Vector3.Backward()
+    });
+    //At the animation key "60", the value of position is "(0, 10, 5)"
+    keys.push( {
+        frame:60, 
+        value: new BABYLON.Vector3(0,10,5),
+    })
+
+    camAnimation.setKeys(keys);
+    universalCamera.animations = [camAnimation];
+
+    scene.beginAnimation(universalCamera, 0, 60, true, 0.2);
+}
+//*************************ABOVES ARE CAMERAS ANIMATION*******************/
 
 //Create a Hemispheric Light
 function createHemisphericLight(scene) {
@@ -181,6 +213,9 @@ function createScene() {
 
     //debug scene
     // debug(scene);
+
+    //animate camera
+    animateCamera(scene);
 
     //return scene
     return scene;
