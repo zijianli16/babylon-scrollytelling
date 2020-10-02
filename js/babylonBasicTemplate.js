@@ -1,7 +1,7 @@
 //import type auto completion file
 ///<reference path='babylon.d.ts' />
 
-//get our canvas
+//get our canvas from HTML
 const canvas = document.getElementById('renderCanvas');
 
 //create a Babylon.js engine, true means anti-aliasing
@@ -30,6 +30,7 @@ function creatArcRotateCamera(scene) {
 }
 
 //create an Universal Camera for mouse scroll camera movement
+//The Universal Camera is the one to choose for first person shooter type games
 var universalCamera;
 
 function createUniversalCamera(scene) {
@@ -40,6 +41,9 @@ function createUniversalCamera(scene) {
     universalCamera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
     scene.collisionsEnabled = true;
     universalCamera.checkCollisions = true;
+
+    universalCamera.inputs.clear();
+    universalCamera.inputs.addMouse();
 
     universalCamera.attachControl(canvas, true);
 
@@ -121,8 +125,6 @@ function importOnlineGLTFModel(scene) {
             //play animations
             scene.animationGroups[1].start(true);
             scene.animationGroups[2].start(true);
-
-
         })
     })
 
@@ -136,7 +138,6 @@ function importLocalGLTFModel(scene) {
             mesh.scaling = new BABYLON.Vector3(1, 1, 1);
             mesh.position = new BABYLON.Vector3.Zero();
             mesh.rotation = new BABYLON.Vector3(0, 0, 0);
-
             mesh.checkCollisions = true;
             //play animations
             scene.animationGroups[1].start(true);
@@ -146,7 +147,7 @@ function importLocalGLTFModel(scene) {
 
 }
 
-//scroll to move camera position, move mouse to change camera perspective. It can only be used when universal camera is enabled
+//For desktop, scroll to move camera position, move mouse to change camera perspective. It can only be used when universal camera is enabled
 function scrollToMoveCamera(scene) {
     scene.onPrePointerObservable.add(function (pointerInfo, eventState) {
         console.log('pointerInfo.type=' + pointerInfo.type);
@@ -200,6 +201,7 @@ function debug(scene) {
 function createScene() {
     //create a local scene variabe
     const scene = new BABYLON.Scene(engine);
+
     //scene background color
     scene.clearColor = new BABYLON.Color3.FromHexString('#000000');
 
