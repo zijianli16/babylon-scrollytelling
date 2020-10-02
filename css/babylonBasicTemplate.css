@@ -56,7 +56,7 @@ html, body {
     -moz-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
     z-index: 1;
-    border: transparent dashed;
+    border: transparent dotted;
 }
 
 .step {
@@ -69,11 +69,6 @@ html, body {
     opacity: 0.9;
     top: 50%;
     z-index: 1;
-    /* outline: yellowgreen dashed; */
-}
-
-.last-text-box {
-    margin-bottom: 150vh;
 }
 
 .step p {
