@@ -52,10 +52,15 @@ function createUniversalCamera(scene) {
 //*************************ABOVES ARE CAMERAS*******************/
 
 //*************************BELOW ARE CAMERAS ANIMATION*******************/
-function animateCamera(scene) {
-    var camAnimation = new BABYLON.Animation("camAnimation", "position", 60, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-     
+
+function animateUniversalCamera(scene) {
+    //First step, creating an animation object; new BABYLON.Animation("nameOfAnimation", "propertyConcerns",FPS#, BABYLON.Animation.ANIMATIONTYPE_XXXX, BABYLON.Animation.ANIMATIONLOOPMODE_XXXX);
+    var universalCameraAnimation = new BABYLON.Animation("universalCameraAnimation", "position", 60, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    
+    //Second step, define a collection of keys
+    // An array with all animation keys
     var keys = [];
+
     //At the animation key "0", the value of position is "(0, 5, 0)"
     keys.push({
         frame: 0,
@@ -73,11 +78,15 @@ function animateCamera(scene) {
         frame:60, 
         value: new BABYLON.Vector3(0,10,5),
     })
+    //Adding the animation array to the animation object:
+    universalCameraAnimation.setKeys(keys);
 
-    camAnimation.setKeys(keys);
-    universalCamera.animations = [camAnimation];
+    //Link this animation to universalCamera:
+    universalCamera.animations = [];
+    universalCamera.animations.push(universalCameraAnimation);
 
-    scene.beginAnimation(universalCamera, 0, 60, true, 0.2);
+    //launch animation; (animated object, starting frame, end frame, true, speed)
+    
 }
 //*************************ABOVES ARE CAMERAS ANIMATION*******************/
 
@@ -197,7 +206,7 @@ function createScene() {
     createUniversalCamera(scene);
 
     //animate Universal Camera
-    animateCamera(scene);
+    animateUniversalCamera(scene);
 
     //creat a HemisphericLight
     createHemisphericLight(scene);
@@ -217,6 +226,9 @@ function createScene() {
     //debug scene
     // debug(scene);
 
+    //start scrollama
+    startScrollama ();
+
     //return scene
     return scene;
 }
@@ -234,7 +246,11 @@ window.addEventListener('resize', function () {
     engine.resize();
 });
 
+
+
 //==========Adding scrollama.js below==================
+function startScrollama () {
+
 const scrollamaScene = scrollama();
 // setup the instance, pass callback functions
 
@@ -242,7 +258,7 @@ scrollamaScene
     .setup({
         step: ".step",
         debug: true,
-        offset: 0.8
+        offset: 0
     })
 
     .onStepEnter(response => {
@@ -254,13 +270,13 @@ scrollamaScene
             let direction = response.direction;
 
             if (newIndex == 0 && direction == 'down') {
-
+                scene.beginAnimation(universalCamera, 0, 30, true, 0.2);
             }
             else if (newIndex == 0 && direction == 'up') {
 
             }
             else if (newIndex == 1 && direction == "down") {
-
+                // scene.beginAnimation(universalCamera, 30, 60, true, 0.2);
             }
             else if (newIndex == 1 && direction == "up") {
 
@@ -289,10 +305,10 @@ scrollamaScene
             let direction = response.direction;
 
             if (newIndex == 0 && direction == "down") {
-
+                // scene.beginAnimation(universalCamera, 0, 30, true, 0.2);
             }
             else if (newIndex == 0 && direction == "up") {
-
+                // scene.beginAnimation(universalCamera, 0, 30, true, 0.2);
 
             }
             else if (newIndex == 1 && direction == "down") {
@@ -321,5 +337,5 @@ scrollamaScene
 window.addEventListener("resize", scrollamaScene.resize);
 //==========Ending of scrollama.js==================
 
-
+}
 
