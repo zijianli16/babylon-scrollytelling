@@ -33,7 +33,7 @@ function creatArcRotateCamera(scene) {
 var universalCamera;
 
 function createUniversalCamera(scene) {
-    universalCamera = new BABYLON.UniversalCamera("camera1", new BABYLON.Vector3(0, 5, 0), scene);
+    universalCamera = new BABYLON.UniversalCamera("camera1", new BABYLON.Vector3(0, 5, -15), scene);
     universalCamera.setTarget(new BABYLON.Vector3(0, 8, 10));
 
     //Set the ellipsoid around the camera
@@ -56,7 +56,7 @@ function createUniversalCamera(scene) {
 function animateUniversalCamera(scene) {
     //First step, creating an animation object; new BABYLON.Animation("nameOfAnimation", "propertyConcerns",FPS#, BABYLON.Animation.ANIMATIONTYPE_XXXX, BABYLON.Animation.ANIMATIONLOOPMODE_XXXX);
     var universalCameraAnimation = new BABYLON.Animation("universalCameraAnimation", "position", 60, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-    
+
     //Second step, define a collection of keys
     // An array with all animation keys
     var keys = [];
@@ -64,19 +64,23 @@ function animateUniversalCamera(scene) {
     //At the animation key "0", the value of position is "(0, 5, 0)"
     keys.push({
         frame: 0,
-        value: new BABYLON.Vector3(0, 5, 0),
+        value: new BABYLON.Vector3(0, 5, -15),
         // outTangent: BABYLON.Vector3.Forward()
     });
     //At the animation key "30", the value of position is "(0, 5, 5)"
-    keys.push( {
+    keys.push({
         frame: 30,
-        value: new BABYLON.Vector3(0, 5, 5),
+        value: new BABYLON.Vector3(0, 5, -10),
         //inTangent: BABYLON.Vector3.Backward()
     });
     //At the animation key "60", the value of position is "(0, 10, 5)"
-    keys.push( {
-        frame:60, 
-        value: new BABYLON.Vector3(0,10,5),
+    keys.push({
+        frame: 60,
+        value: new BABYLON.Vector3(0, 5, 5),
+    });
+    keys.push({
+        frame: 90,
+        value: new BABYLON.Vector3(0, 10, 10),
     })
     //Adding the animation array to the animation object:
     universalCameraAnimation.setKeys(keys);
@@ -86,7 +90,7 @@ function animateUniversalCamera(scene) {
     universalCamera.animations.push(universalCameraAnimation);
 
     //launch animation; (animated object, starting frame, end frame, true, speed)
-    
+
 }
 //*************************ABOVES ARE CAMERAS ANIMATION*******************/
 
@@ -227,7 +231,7 @@ function createScene() {
     // debug(scene);
 
     //start scrollama
-    startScrollama ();
+    startScrollama();
 
     //return scene
     return scene;
@@ -249,93 +253,93 @@ window.addEventListener('resize', function () {
 
 
 //==========Adding scrollama.js below==================
-function startScrollama () {
+function startScrollama() {
 
-const scrollamaScene = scrollama();
-// setup the instance, pass callback functions
+    const scrollamaScene = scrollama();
+    // setup the instance, pass callback functions
 
-scrollamaScene
-    .setup({
-        step: ".step",
-        debug: true,
-        offset: 0
-    })
+    scrollamaScene
+        .setup({
+            step: ".step",
+            //debug: true,
+            offset: 0
+        })
 
-    .onStepEnter(response => {
-        // { element, index, direction }
+        .onStepEnter(response => {
+            // { element, index, direction }
 
-        function changeCameraPosition01() {
+            function changeCameraPosition01() {
 
-            let newIndex = response.index;
-            let direction = response.direction;
+                let newIndex = response.index;
+                let direction = response.direction;
 
-            if (newIndex == 0 && direction == 'down') {
-                scene.beginAnimation(universalCamera, 0, 30, true, 0.2);
+                if (newIndex == 0 && direction == 'down') {
+                    scene.beginAnimation(universalCamera, 0, 30, true, 0.2);
+                }
+                else if (newIndex == 0 && direction == 'up') {
+                    scene.beginAnimation(universalCamera, 30, 0, true, 0.2);
+                }
+                else if (newIndex == 1 && direction == "down") {
+                    scene.beginAnimation(universalCamera, 30, 60, true, 0.2);
+                }
+                else if (newIndex == 1 && direction == "up") {
+                    scene.beginAnimation(universalCamera, 60, 30, true, 0.2);
+                }
+                else if (newIndex == 2 && direction == "down") {
+                    scene.beginAnimation(universalCamera, 60, 90, true, 0.2);
+                }
+                else if (newIndex == 2 && direction == "up") {
+                    scene.beginAnimation(universalCamera, 90, 60, true, 0.2);
+                }
             }
-            else if (newIndex == 0 && direction == 'up') {
 
+            changeCameraPosition01();
+
+            console.log("Entered");
+            console.log(response.index);
+            console.log(response.direction);
+
+        })
+
+        .onStepExit(response => {
+            // { element, index, direction }
+            function changeCameraPosition02() {
+
+                let newIndex = response.index;
+                let direction = response.direction;
+
+                if (newIndex == 0 && direction == "down") {
+                    // scene.beginAnimation(universalCamera, 0, 30, true, 0.2);
+                }
+                else if (newIndex == 0 && direction == "up") {
+                    // scene.beginAnimation(universalCamera, 0, 30, true, 0.2);
+
+                }
+                else if (newIndex == 1 && direction == "down") {
+
+                }
+                else if (newIndex == 1 && direction == "up") {
+
+                }
+                else if (newIndex == 2 && direction == "down") {
+
+                }
+                else if (newIndex == 2 && direction == "up") {
+
+                }
             }
-            else if (newIndex == 1 && direction == "down") {
-                // scene.beginAnimation(universalCamera, 30, 60, true, 0.2);
-            }
-            else if (newIndex == 1 && direction == "up") {
 
-            }
-            else if (newIndex == 2 && direction == "down") {
+            changeCameraPosition02();
 
-            }
-            else if (newIndex == 2 && direction == "up") {
+            console.log("Exit");
+            console.log(response.index);
+            console.log(response.direction);
 
-            }
-        }
+        })
 
-        changeCameraPosition01();
-
-        console.log("Entered");
-        console.log(response.index);
-        console.log(response.direction);
-
-    })
-
-    .onStepExit(response => {
-        // { element, index, direction }
-        function changeCameraPosition02() {
-
-            let newIndex = response.index;
-            let direction = response.direction;
-
-            if (newIndex == 0 && direction == "down") {
-                // scene.beginAnimation(universalCamera, 0, 30, true, 0.2);
-            }
-            else if (newIndex == 0 && direction == "up") {
-                // scene.beginAnimation(universalCamera, 0, 30, true, 0.2);
-
-            }
-            else if (newIndex == 1 && direction == "down") {
-
-            }
-            else if (newIndex == 1 && direction == "up") {
-
-            }
-            else if (newIndex == 2 && direction == "down") {
-
-            }
-            else if (newIndex == 2 && direction == "up") {
-
-            }
-        }
-
-        changeCameraPosition02();
-
-        console.log("Exit");
-        console.log(response.index);
-        console.log(response.direction);
-
-    })
-
-// setup resize event
-window.addEventListener("resize", scrollamaScene.resize);
-//==========Ending of scrollama.js==================
+    // setup resize event
+    window.addEventListener("resize", scrollamaScene.resize);
+    //==========Ending of scrollama.js==================
 
 }
 

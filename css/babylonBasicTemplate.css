@@ -27,7 +27,6 @@ html, body {
     background-color: white;
     /* outline: yellow dashed; */
     z-index: 1;
-    border: yellow solid;
 }
 
 #renderCanvas {
@@ -57,7 +56,7 @@ html, body {
     -moz-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
     z-index: 1;
-    border: red dashed;
+    border: transparent dashed;
 }
 
 .step {
@@ -74,7 +73,7 @@ html, body {
 }
 
 .last-text-box {
-    margin-bottom: 100vh;
+    margin-bottom: 150vh;
 }
 
 .step p {
