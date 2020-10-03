@@ -217,6 +217,7 @@ BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {
         z-index: 3;
     }
     `;
+
     document.getElementById('babylonContainer').appendChild(customLoadingScreenCss);
 
     //this._resizeLoadingUI();
