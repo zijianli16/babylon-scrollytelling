@@ -220,13 +220,18 @@ BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {
 
     //this._resizeLoadingUI();
     //window.addEventListener("resize", this._resizeLoadingUI);
-    
+
     document.getElementById("babylonContainer").appendChild(this._loadingDiv);
+
+    document.getElementsByClassName("scrollTexts")[0].style.display = "none";   
 };
 
 BABYLON.DefaultLoadingScreen.prototype.hideLoadingUI = function () {
     document.getElementById("customLoadingScreen").style.display = "none";
     console.log("scene is now loaded");
+
+    document.getElementsByClassName("scrollTexts")[0].style.display = null;   
+    
 }
 
 
@@ -271,14 +276,14 @@ function createScene() {
     //debug scene
     // debug(scene);
 
-    //start scrollama
-    startScrollama();
-
     engine.displayLoadingUI();
 
     setTimeout(() => {
         engine.hideLoadingUI();
-    }, 5000)
+
+        //start scrollama
+        startScrollama();
+    }, 10000)
 
     //return scene
     return scene;
