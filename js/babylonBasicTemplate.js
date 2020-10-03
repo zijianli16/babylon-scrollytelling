@@ -283,7 +283,7 @@ function createScene() {
 
         //start scrollama
         startScrollama();
-    }, 10000)
+    }, 3000)
 
     //return scene
     return scene;
