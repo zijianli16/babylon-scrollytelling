@@ -190,6 +190,45 @@ function scrollToMoveCamera(scene) {
     }, BABYLON.PointerEventTypes.POINTERMOVE)
 }
 
+//creating customized loading screen
+BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {
+    if (document.getElementById("customLoadingScreen")) {
+        document.getElementById("customLoadingScreen").style.display = "initial";
+        // Do not add a loading screen if there is already one
+        return;
+    }
+
+    this._loadingDiv = document.createElement("div");
+    this._loadingDiv.id = "customLoadingScreen";
+    this._loadingDiv.innerHTML = "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Loadingsome.gif/600px-Loadingsome.gif' />";
+    var customLoadingScreenCss = document.createElement('style');
+    // customLoadingScreenCss.type = 'text/css';
+    customLoadingScreenCss.innerHTML = `
+    #customLoadingScreen{
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #FFFFFF;
+        color: white;
+        font-size:50px;
+        text-align:center;
+        z-index: 3;
+    }
+    `;
+    document.getElementById('babylonContainer').appendChild(customLoadingScreenCss);
+
+    //this._resizeLoadingUI();
+    //window.addEventListener("resize", this._resizeLoadingUI);
+    
+    document.getElementById("babylonContainer").appendChild(this._loadingDiv);
+};
+
+BABYLON.DefaultLoadingScreen.prototype.hideLoadingUI = function () {
+    document.getElementById("customLoadingScreen").style.display = "none";
+    console.log("scene is now loaded");
+}
+
 
 //Debug: show Scene Explore and Inspector
 function debug(scene) {
@@ -203,7 +242,7 @@ function createScene() {
     const scene = new BABYLON.Scene(engine);
 
     //scene background color
-    scene.clearColor = new BABYLON.Color3.FromHexString('#000000');
+    scene.clearColor = new BABYLON.Color3.FromHexString('#ffffff');
 
     //create an Arc Rotate Camera
     // creatArcRotateCamera(scene);
@@ -234,6 +273,12 @@ function createScene() {
 
     //start scrollama
     startScrollama();
+
+    engine.displayLoadingUI();
+
+    setTimeout(() => {
+        engine.hideLoadingUI();
+    }, 5000)
 
     //return scene
     return scene;
