@@ -139,9 +139,10 @@ function importLocalGLTFModel(scene) {
             mesh.position = new BABYLON.Vector3.Zero();
             mesh.rotation = new BABYLON.Vector3(0, 0, 0);
             mesh.checkCollisions = true;
+            
             //play animations
-            scene.animationGroups[1].start(true);
-            scene.animationGroups[2].start(true);
+            //scene.animationGroups[1].start(true);
+            //scene.animationGroups[2].start(true);
         })
     })
 
