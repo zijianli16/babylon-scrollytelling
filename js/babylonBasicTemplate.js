@@ -141,7 +141,7 @@ function importLocalGLTFModel(scene) {
             mesh.checkCollisions = true;
             
             //play animations
-            //scene.animationGroups[1].start(true);
+            scene.animationGroups[1].start(true);
             //scene.animationGroups[2].start(true);
         })
     })
