@@ -1,10 +1,10 @@
 //import type auto completion file
 ///<reference path='babylon.d.ts' />
 
-//get our canvas from HTML
+//get the canvas element from the web page’s DOM
 const canvas = document.getElementById('renderCanvas');
 
-//create a Babylon.js engine, true means anti-aliasing
+//create a Babylon.js engine object. The engine is BJS’ main workhorse which will be used to continuously render the scene; true means anti-aliasing
 const engine = new BABYLON.Engine(canvas, true);
 
 //*************************BELOW ARE CAMERAS*******************/
@@ -249,8 +249,8 @@ function debug(scene) {
     scene.debugLayer.show();
 }
 
-//create the main scene
-function createScene() {
+//create the main BABYLON scene object
+function createScene(canvas, engine) {
     //create a local scene variabe
     const scene = new BABYLON.Scene(engine);
 
@@ -301,9 +301,9 @@ function createScene() {
 }
 
 //pass local scene to global scene
-const scene = createScene();
+const scene = createScene(canvas, engine);
 
-//run the engine
+//run the engine to render BJS global scene obeject 
 engine.runRenderLoop(() => {
     scene.render();
 });
