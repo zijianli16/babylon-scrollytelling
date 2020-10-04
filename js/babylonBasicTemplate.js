@@ -57,6 +57,12 @@ function createUniversalCamera(scene) {
 
 //*************************BELOW ARE CAMERAS ANIMATION*******************/
 
+//camera rotation without pressing down left mouth key
+function cameraRotateWithoutLeftMouse(scene) {
+    console.log("scene.pointerY = " + scene.pointerY)
+}
+canvas.addEventListener('mousemove', cameraRotateWithoutLeftMouse);
+
 function animateUniversalCamera(scene) {
     //First step, creating an animation object; new BABYLON.Animation("nameOfAnimation", "propertyConcerns",FPS#, BABYLON.Animation.ANIMATIONTYPE_XXXX, BABYLON.Animation.ANIMATIONLOOPMODE_XXXX);
     var universalCameraAnimation = new BABYLON.Animation("universalCameraAnimation", "position", 60, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
@@ -259,6 +265,9 @@ function createScene() {
 
     //animate Universal Camera
     animateUniversalCamera(scene);
+
+    //Universal Camera Movement without pressing mouse
+    //cameraRotateWithoutLeftMouse(scene);
 
     //creat a HemisphericLight
     createHemisphericLight(scene);
