@@ -47,6 +47,12 @@ function createUniversalCamera(scene) {
 
     universalCamera.attachControl(canvas, true);
 
+    function onMouseMove(){
+        universalCamera.rotation.x = (scene.pointerY-canvas.height/2)/500;
+        universalCamera.rotation.y = (scene.pointerX-canvas.width/2)/800;
+    }
+    canvas.addEventListener('mousemove',onMouseMove);
+
     //lock camera rotation
     // scene.registerBeforeRender(function () {
     //     camera.position.y = 100;
@@ -59,9 +65,19 @@ function createUniversalCamera(scene) {
 
 //camera rotation without pressing down left mouth key
 function cameraRotateWithoutLeftMouse(scene) {
-    console.log("scene.pointerY = " + scene.pointerY)
+    scene.onPrePointerObservable.add(function (pointerInfo, eventState) {
+        var event = pointerInfo.event;
+        var mousePositionX = event.clientX;
+        var mousePositionY = event.clientY;
+
+
+
+        console.log('mousePosition X =' + mousePositionX);
+        console.log('mousePosition Y =' + mousePositionY);
+
+    }, BABYLON.PointerEventTypes.POINTERMOVE)
 }
-canvas.addEventListener('mousemove', cameraRotateWithoutLeftMouse);
+//canvas.addEventListener('mousemove', cameraRotateWithoutLeftMouse);
 
 function animateUniversalCamera(scene) {
     //First step, creating an animation object; new BABYLON.Animation("nameOfAnimation", "propertyConcerns",FPS#, BABYLON.Animation.ANIMATIONTYPE_XXXX, BABYLON.Animation.ANIMATIONLOOPMODE_XXXX);
@@ -198,7 +214,7 @@ function scrollToMoveCamera(scene) {
 }
 
 //creating customized loading screen
-BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {
+BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function (scene) {
     if (document.getElementById("customLoadingScreen")) {
         document.getElementById("customLoadingScreen").style.display = "initial";
         // Do not add a loading screen if there is already one
@@ -234,7 +250,7 @@ BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {
     document.getElementsByClassName("scrollTexts")[0].style.display = "none";   
 };
 
-BABYLON.DefaultLoadingScreen.prototype.hideLoadingUI = function () {
+BABYLON.DefaultLoadingScreen.prototype.hideLoadingUI = function (scene) {
     document.getElementById("customLoadingScreen").style.display = "none";
     console.log("scene is now loaded");
 
@@ -312,8 +328,6 @@ engine.runRenderLoop(() => {
 window.addEventListener('resize', function () {
     engine.resize();
 });
-
-
 
 //==========Adding scrollama.js below==================
 function startScrollama() {
