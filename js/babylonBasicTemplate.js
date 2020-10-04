@@ -48,8 +48,8 @@ function createUniversalCamera(scene) {
     universalCamera.attachControl(canvas, true);
 
     function onMouseMove(){
-        universalCamera.rotation.x = (scene.pointerY-canvas.height/2)/500;
-        universalCamera.rotation.y = (scene.pointerX-canvas.width/2)/800;
+        universalCamera.rotation.x = (scene.pointerY-canvas.height/2)/1000;
+        universalCamera.rotation.y = (scene.pointerX-canvas.width/2)/1000;
     }
     canvas.addEventListener('mousemove',onMouseMove);
 
