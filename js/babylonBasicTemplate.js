@@ -2,7 +2,6 @@
 ///<reference path='babylon.d.ts' />
 
 //-------------Testing get mouse position
-
 var box = document.getElementById("babylonScrollytelling");
 let pointerPositionX;
 let pointerPositionY;
