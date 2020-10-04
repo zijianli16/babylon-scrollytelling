@@ -70,8 +70,6 @@ function cameraRotateWithoutLeftMouse(scene) {
         var mousePositionX = event.clientX;
         var mousePositionY = event.clientY;
 
-
-
         console.log('mousePosition X =' + mousePositionX);
         console.log('mousePosition Y =' + mousePositionY);
 
@@ -311,6 +309,8 @@ function createScene(canvas, engine) {
         //start scrollama
         startScrollama();
     }, 5000)
+
+    
 
     //return scene
     return scene;
