@@ -1,6 +1,24 @@
 //import type auto completion file
 ///<reference path='babylon.d.ts' />
 
+//-------------Testing get mouse position
+
+var box = document.getElementById("babylonScrollytelling");
+let pointerPositionX;
+let pointerPositionY;
+
+document.addEventListener('mousemove', (event) => {
+    //console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
+    pointerPositionX = event.clientX;
+    pointerPositionY = event.clientY;
+
+    console.log("pointerPositionX =" + pointerPositionX);
+    console.log("pointerPositionY =" + pointerPositionY);
+
+});
+//-------------Testing get mouse position
+
+
 //get the canvas element from the web page’s DOM
 const canvas = document.getElementById('renderCanvas');
 
@@ -48,10 +66,12 @@ function createUniversalCamera(scene) {
     universalCamera.attachControl(canvas, true);
 
     function onMouseMove(){
-        universalCamera.rotation.x = (scene.pointerY-canvas.height/2)/1000;
-        universalCamera.rotation.y = (scene.pointerX-canvas.width/2)/1000;
+        //universalCamera.rotation.x = (scene.pointerY-canvas.height/2)/1000;
+        //universalCamera.rotation.y = (scene.pointerX-canvas.width/2)/1000;
+        universalCamera.rotation.x = (pointerPositionY-canvas.height)/1000;
+        universalCamera.rotation.y = (pointerPositionX-canvas.height)/1000;
     }
-    canvas.addEventListener('mousemove',onMouseMove);
+    box.addEventListener('mousemove',onMouseMove);
 
     //lock camera rotation
     // scene.registerBeforeRender(function () {
