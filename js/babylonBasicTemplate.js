@@ -25,8 +25,7 @@ document.addEventListener("touchmove", (e) => {
 
     console.log("touchPositionX =" + touchPositionX);
     console.log("touchPositionY =" + touchPositionY);
-
-});
+},{ passive: false });
 //-------------Testing get mouse/touch position
 
 
@@ -72,7 +71,7 @@ function createUniversalCamera(scene) {
     universalCamera.checkCollisions = true;
 
     universalCamera.inputs.clear();
-    universalCamera.inputs.addMouse();
+    //universalCamera.inputs.addMouse();
 
     universalCamera.attachControl(canvas, true);
 
@@ -84,8 +83,8 @@ function createUniversalCamera(scene) {
             function onTouchMove() {
                 //universalCamera.rotation.x = (scene.pointerY-canvas.height/2)/1000;
                 //universalCamera.rotation.y = (scene.pointerX-canvas.width/2)/1000;
-                universalCamera.rotation.x = (touchPositionY - canvas.height / 2) / 1000;
-                universalCamera.rotation.y = (touchPositionX - canvas.height / 2) / 1000;
+                universalCamera.rotation.x = (touchPositionY - canvas.height / 2) / 800;
+                universalCamera.rotation.y = (touchPositionX - canvas.width / 2) / 800;
             }
             box.addEventListener('touchmove', onTouchMove);
         }
