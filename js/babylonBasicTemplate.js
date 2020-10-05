@@ -1,7 +1,7 @@
 //import type auto completion file
 ///<reference path='babylon.d.ts' />
 
-//-------------Testing get mouse position
+//-------------Testing get mouse/touch position
 var box = document.getElementById("babylonScrollytelling");
 let pointerPositionX;
 let pointerPositionY;
@@ -15,7 +15,19 @@ document.addEventListener('mousemove', (event) => {
     console.log("pointerPositionY =" + pointerPositionY);
 
 });
-//-------------Testing get mouse position
+
+let touchPositionX;
+let touchPositionY;
+document.addEventListener("touchmove", (e) => {
+
+    touchPositionX = e.touches[0].clientX;
+    touchPositionY = e.touches[0].clientY;
+
+    console.log("touchPositionX =" + touchPositionX);
+    console.log("touchPositionY =" + touchPositionY);
+
+});
+//-------------Testing get mouse/touch position
 
 
 //get the canvas element from the web page’s DOM
@@ -64,13 +76,30 @@ function createUniversalCamera(scene) {
 
     universalCamera.attachControl(canvas, true);
 
-    function onMouseMove(){
-        //universalCamera.rotation.x = (scene.pointerY-canvas.height/2)/1000;
-        //universalCamera.rotation.y = (scene.pointerX-canvas.width/2)/1000;
-        universalCamera.rotation.x = (pointerPositionY-canvas.height)/1000;
-        universalCamera.rotation.y = (pointerPositionX-canvas.height)/1000;
+    window.addEventListener("resize", detectWindow);
+
+    function detectWindow() {
+        var windowWidth = $(window).width();
+        if (windowWidth < 1200) {
+            function onTouchMove() {
+                //universalCamera.rotation.x = (scene.pointerY-canvas.height/2)/1000;
+                //universalCamera.rotation.y = (scene.pointerX-canvas.width/2)/1000;
+                universalCamera.rotation.x = (touchPositionY - canvas.height / 2) / 1000;
+                universalCamera.rotation.y = (touchPositionX - canvas.height / 2) / 1000;
+            }
+            box.addEventListener('touchmove', onTouchMove);
+        }
+        else {
+            function onMouseMove() {
+                //universalCamera.rotation.x = (scene.pointerY-canvas.height/2)/1000;
+                //universalCamera.rotation.y = (scene.pointerX-canvas.width/2)/1000;
+                universalCamera.rotation.x = (pointerPositionY - canvas.height) / 1000;
+                universalCamera.rotation.y = (pointerPositionX - canvas.height) / 1000;
+            }
+            box.addEventListener('mousemove', onMouseMove);
+        }
     }
-    box.addEventListener('mousemove',onMouseMove);
+    detectWindow();
 
     //lock camera rotation
     // scene.registerBeforeRender(function () {
@@ -178,7 +207,7 @@ function importLocalGLTFModel(scene) {
             mesh.position = new BABYLON.Vector3.Zero();
             mesh.rotation = new BABYLON.Vector3(0, 0, 0);
             mesh.checkCollisions = true;
-            
+
             //play animations
             scene.animationGroups[1].start(true);
             //scene.animationGroups[2].start(true);
@@ -264,15 +293,15 @@ BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function (scene) {
 
     document.getElementById("babylonContainer").appendChild(this._loadingDiv);
 
-    document.getElementsByClassName("scrollTexts")[0].style.display = "none";   
+    document.getElementsByClassName("scrollTexts")[0].style.display = "none";
 };
 
 BABYLON.DefaultLoadingScreen.prototype.hideLoadingUI = function (scene) {
     document.getElementById("customLoadingScreen").style.display = "none";
     console.log("scene is now loaded");
 
-    document.getElementsByClassName("scrollTexts")[0].style.display = null;   
-    
+    document.getElementsByClassName("scrollTexts")[0].style.display = null;
+
 }
 
 
@@ -329,7 +358,7 @@ function createScene(canvas, engine) {
         startScrollama();
     }, 5000)
 
-    
+
 
     //return scene
     return scene;
