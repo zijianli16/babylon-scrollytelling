@@ -33,7 +33,7 @@ html, body {
 #renderCanvas {
     position: relative;
     margin: 0;
-    height: 100vh;
+    height: 90vh;
     width: 100%;
     z-index: 1;
     object-fit: cover;
