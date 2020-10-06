@@ -2,7 +2,9 @@
 ///<reference path='babylon.d.ts' />
 
 //-------------Testing get mouse/touch position
-var box = document.getElementById("babylonScrollytelling");
+var scrollytellingArea = document.getElementById("babylonScrollytelling");
+
+//Get mouse and touch position in order to change universalCamera perspective
 let pointerPositionX;
 let pointerPositionY;
 
@@ -25,8 +27,8 @@ document.addEventListener("touchmove", (e) => {
 
     console.log("touchPositionX =" + touchPositionX);
     console.log("touchPositionY =" + touchPositionY);
-},{ passive: false });
-//-------------Testing get mouse/touch position
+}, { passive: false });
+//-------------Get mouse/touch position
 
 
 //get the canvas element from the web page’s DOM
@@ -62,19 +64,23 @@ function creatArcRotateCamera(scene) {
 var universalCamera;
 
 function createUniversalCamera(scene) {
+    //set camera name, initial position, and sign it to scene
     universalCamera = new BABYLON.UniversalCamera("camera1", new BABYLON.Vector3(0, 5, -15), scene);
+    //set initial camera target
     universalCamera.setTarget(new BABYLON.Vector3(0, 8, 10));
+    //attach camera to canvas
+    universalCamera.attachControl(canvas, true);
 
     //Set the ellipsoid around the camera
-    universalCamera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
-    scene.collisionsEnabled = true;
-    universalCamera.checkCollisions = true;
+    //universalCamera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
+    //scene.collisionsEnabled = true;
+    //universalCamera.checkCollisions = true;
 
     universalCamera.inputs.clear();
     //universalCamera.inputs.addMouse();
 
-    universalCamera.attachControl(canvas, true);
 
+    //for window object, we add an event listener. When window resize, run function detectWindow. 
     window.addEventListener("resize", detectWindow);
 
     function detectWindow() {
@@ -86,7 +92,8 @@ function createUniversalCamera(scene) {
                 universalCamera.rotation.x = (touchPositionY - canvas.height / 2) / 800;
                 universalCamera.rotation.y = (touchPositionX - canvas.width / 2) / 800;
             }
-            box.addEventListener('touchmove', onTouchMove);
+
+            scrollytellingArea.addEventListener('touchmove', onTouchMove);
         }
         else {
             function onMouseMove() {
@@ -95,9 +102,12 @@ function createUniversalCamera(scene) {
                 universalCamera.rotation.x = (pointerPositionY - canvas.height) / 1000;
                 universalCamera.rotation.y = (pointerPositionX - canvas.height) / 1000;
             }
-            box.addEventListener('mousemove', onMouseMove);
+
+            scrollytellingArea.addEventListener('mousemove', onMouseMove);
         }
     }
+
+    //call or run detectWindow() function
     detectWindow();
 
     //lock camera rotation
@@ -110,7 +120,7 @@ function createUniversalCamera(scene) {
 
 //*************************BELOW ARE CAMERAS ANIMATION*******************/
 
-//camera rotation without pressing down left mouth key
+//(Obsolete) camera rotation without pressing down left mouth key 
 function cameraRotateWithoutLeftMouse(scene) {
     scene.onPrePointerObservable.add(function (pointerInfo, eventState) {
         var event = pointerInfo.event;
@@ -153,15 +163,20 @@ function animateUniversalCamera(scene) {
         frame: 90,
         value: new BABYLON.Vector3(0, 10, 10),
     })
-    //Adding the animation array to the animation object:
+    //Assign the animation array to the animation object:
     universalCameraAnimation.setKeys(keys);
 
-    //Link this animation to universalCamera:
+    //Assign this animation to universalCamera:
     universalCamera.animations = [];
     universalCamera.animations.push(universalCameraAnimation);
 
     //launch animation; (animated object, starting frame, end frame, true, speed)
+    
+    
+    //universalCameraAni01.pause();
 
+    //start scrollama
+    startScrollama();
 }
 //*************************ABOVES ARE CAMERAS ANIMATION*******************/
 
@@ -324,9 +339,6 @@ function createScene(canvas, engine) {
     //create an iniversal camera to enable scroll to control camera movement
     createUniversalCamera(scene);
 
-    //animate Universal Camera
-    animateUniversalCamera(scene);
-
     //Universal Camera Movement without pressing mouse
     //cameraRotateWithoutLeftMouse(scene);
 
@@ -353,11 +365,9 @@ function createScene(canvas, engine) {
     setTimeout(() => {
         engine.hideLoadingUI();
 
-        //start scrollama
-        startScrollama();
+        //animate Universal Camera
+        animateUniversalCamera(scene);
     }, 5000)
-
-
 
     //return scene
     return scene;
