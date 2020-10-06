@@ -37,6 +37,112 @@ const canvas = document.getElementById('renderCanvas');
 //create a Babylon.js engine object. The engine is BJS’ main workhorse which will be used to continuously render the scene; true means anti-aliasing
 const engine = new BABYLON.Engine(canvas, true);
 
+//creating customized loading screen
+BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function (scene) {
+    if (document.getElementById("customLoadingScreen")) {
+        document.getElementById("customLoadingScreen").style.display = "initial";
+        // Do not add a loading screen if there is already one
+        return;
+    }
+
+    this._loadingDiv = document.createElement("div");
+    this._loadingDiv.id = "customLoadingScreen";
+    this._loadingDiv.innerHTML = "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Loadingsome.gif/600px-Loadingsome.gif' />";
+    var customLoadingScreenCss = document.createElement('style');
+    // customLoadingScreenCss.type = 'text/css';
+    customLoadingScreenCss.innerHTML = `
+    #customLoadingScreen{
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #FFFFFF;
+        color: white;
+        font-size:50px;
+        text-align:center;
+        z-index: 3;
+    }
+    `;
+
+    document.getElementById('babylonContainer').appendChild(customLoadingScreenCss);
+
+    //this._resizeLoadingUI();
+    //window.addEventListener("resize", this._resizeLoadingUI);
+
+    document.getElementById("babylonContainer").appendChild(this._loadingDiv);
+
+    document.getElementsByClassName("scrollTexts")[0].style.display = "none";
+};
+
+BABYLON.DefaultLoadingScreen.prototype.hideLoadingUI = function (scene) {
+    document.getElementById("customLoadingScreen").style.display = "none";
+    console.log("scene is now loaded");
+
+    document.getElementsByClassName("scrollTexts")[0].style.display = null;
+
+}
+
+//create the main BABYLON scene object
+function createScene(canvas, engine) {
+    //create a local scene variabe
+    const scene = new BABYLON.Scene(engine);
+
+    //scene background color
+    scene.clearColor = new BABYLON.Color3.FromHexString('#ffffff');
+
+    //create an Arc Rotate Camera
+    // creatArcRotateCamera(scene);
+
+    //create an iniversal camera to enable scroll to control camera movement
+    createUniversalCamera(scene);
+
+    //Universal Camera Movement without pressing mouse
+    //cameraRotateWithoutLeftMouse(scene);
+
+    //creat a HemisphericLight
+    createHemisphericLight(scene);
+
+    //create HDR Skybox
+    createSkybox(scene);
+
+    //import online glTF models
+    // importOnlineGLTFModel(scene);
+
+    //import local glTF models
+    importLocalGLTFModel(scene);
+
+    //scroll to move camera position, move mouse to change camera perspective. It can only be used when universal camera is enabled
+    //scrollToMoveCamera(scene);
+
+    //debug scene
+    // debug(scene);
+
+    engine.displayLoadingUI();
+
+    setTimeout(() => {
+        engine.hideLoadingUI();
+
+        //animate Universal Camera
+        animateUniversalCamera(scene);
+    }, 5000)
+
+    //return scene
+    return scene;
+}
+
+//pass local scene to global scene
+const scene = createScene(canvas, engine);
+
+//run the engine to render BJS global scene obeject 
+engine.runRenderLoop(() => {
+    scene.render();
+});
+
+// the canvas/window resize event handler
+window.addEventListener('resize', function () {
+    engine.resize();
+});
+
 //*************************BELOW ARE CAMERAS*******************/
 //create an Arc Rotate Camera
 function creatArcRotateCamera(scene) {
@@ -171,8 +277,8 @@ function animateUniversalCamera(scene) {
     universalCamera.animations.push(universalCameraAnimation);
 
     //launch animation; (animated object, starting frame, end frame, true, speed)
-    
-    
+
+
     //universalCameraAni01.pause();
 
     //start scrollama
@@ -273,118 +379,11 @@ function scrollToMoveCamera(scene) {
     }, BABYLON.PointerEventTypes.POINTERMOVE)
 }
 
-//creating customized loading screen
-BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function (scene) {
-    if (document.getElementById("customLoadingScreen")) {
-        document.getElementById("customLoadingScreen").style.display = "initial";
-        // Do not add a loading screen if there is already one
-        return;
-    }
-
-    this._loadingDiv = document.createElement("div");
-    this._loadingDiv.id = "customLoadingScreen";
-    this._loadingDiv.innerHTML = "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Loadingsome.gif/600px-Loadingsome.gif' />";
-    var customLoadingScreenCss = document.createElement('style');
-    // customLoadingScreenCss.type = 'text/css';
-    customLoadingScreenCss.innerHTML = `
-    #customLoadingScreen{
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #FFFFFF;
-        color: white;
-        font-size:50px;
-        text-align:center;
-        z-index: 3;
-    }
-    `;
-
-    document.getElementById('babylonContainer').appendChild(customLoadingScreenCss);
-
-    //this._resizeLoadingUI();
-    //window.addEventListener("resize", this._resizeLoadingUI);
-
-    document.getElementById("babylonContainer").appendChild(this._loadingDiv);
-
-    document.getElementsByClassName("scrollTexts")[0].style.display = "none";
-};
-
-BABYLON.DefaultLoadingScreen.prototype.hideLoadingUI = function (scene) {
-    document.getElementById("customLoadingScreen").style.display = "none";
-    console.log("scene is now loaded");
-
-    document.getElementsByClassName("scrollTexts")[0].style.display = null;
-
-}
-
-
 //Debug: show Scene Explore and Inspector
 function debug(scene) {
     //Debug: show Scene Explore and Inspector
     scene.debugLayer.show();
 }
-
-//create the main BABYLON scene object
-function createScene(canvas, engine) {
-    //create a local scene variabe
-    const scene = new BABYLON.Scene(engine);
-
-    //scene background color
-    scene.clearColor = new BABYLON.Color3.FromHexString('#ffffff');
-
-    //create an Arc Rotate Camera
-    // creatArcRotateCamera(scene);
-
-    //create an iniversal camera to enable scroll to control camera movement
-    createUniversalCamera(scene);
-
-    //Universal Camera Movement without pressing mouse
-    //cameraRotateWithoutLeftMouse(scene);
-
-    //creat a HemisphericLight
-    createHemisphericLight(scene);
-
-    //create HDR Skybox
-    createSkybox(scene);
-
-    //import online glTF models
-    // importOnlineGLTFModel(scene);
-
-    //import local glTF models
-    importLocalGLTFModel(scene);
-
-    //scroll to move camera position, move mouse to change camera perspective. It can only be used when universal camera is enabled
-    //scrollToMoveCamera(scene);
-
-    //debug scene
-    // debug(scene);
-
-    engine.displayLoadingUI();
-
-    setTimeout(() => {
-        engine.hideLoadingUI();
-
-        //animate Universal Camera
-        animateUniversalCamera(scene);
-    }, 5000)
-
-    //return scene
-    return scene;
-}
-
-//pass local scene to global scene
-const scene = createScene(canvas, engine);
-
-//run the engine to render BJS global scene obeject 
-engine.runRenderLoop(() => {
-    scene.render();
-});
-
-// the canvas/window resize event handler
-window.addEventListener('resize', function () {
-    engine.resize();
-});
 
 //==========Adding scrollama.js below==================
 function startScrollama() {
