@@ -1,10 +1,6 @@
-//==========Adding scrollama.js below==================
-var scene,universalCamera;
-
-export function startScrollama(scene1, universalCamera1) {
-    scene = scene1;
-    universalCamera = universalCamera1;
-
+//==========Adding scrollama.js below, this is used to trigger camera position movement animation==================
+export function startScrollama(scene, universalCamera) {
+    
     const scrollamaScene = scrollama();
     // setup the instance, pass callback functions
 
@@ -89,9 +85,9 @@ export function startScrollama(scene1, universalCamera1) {
 
     // setup resize event
     window.addEventListener("resize", scrollamaScene.resize);
-    //==========Ending of scrollama.js==================
 
 }
+  //==========Ending of scrollama.js==================
 
 
 
